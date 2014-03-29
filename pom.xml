@@ -256,6 +256,8 @@
               <Bundle-Vendor>Eclipse Aether</Bundle-Vendor>
               <Bundle-Version>${bundle.osgiVersion}</Bundle-Version>
               <Export-Package>org.eclipse.aether.internal.*;x-internal:=true,org.eclipse.aether.*</Export-Package>
+              <!-- Tweak range for self-imports to exclude (incompatible) milestones -->
+              <Import-Package>org.eclipse.aether.*;version="[0.9.1,1)",*</Import-Package>
             </instructions>
           </configuration>
           <executions>
