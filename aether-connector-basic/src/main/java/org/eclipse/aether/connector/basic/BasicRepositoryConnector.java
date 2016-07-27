@@ -70,6 +70,10 @@ final class BasicRepositoryConnector
 
     private static final String CONFIG_PROP_SMART_CHECKSUMS = "aether.connector.smartChecksums";
 
+    private static final String CONFIG_PROP_SKIP_CHECKSUMS = "aether.connector.skipChecksums";
+
+    private static final boolean CONFIG_SKIP_CHECKSUMS;
+
     private final Logger logger;
 
     private final FileProcessor fileProcessor;
@@ -445,6 +449,10 @@ final class BasicRepositoryConnector
                     boolean resume = partFile.isResume() && trial <= firstTrial;
                     GetTask task = new GetTask( path ).setDataFile( tmp, resume ).setListener( listener );
                     transporter.get( task );
+
+                    if ( CONFIG_SKIP_CHECKSUMS )
+                        continue;
+
                     try
                     {
                         checksumValidator.validate( listener.getChecksums(), smartChecksums ? task.getChecksums()
@@ -583,4 +591,14 @@ final class BasicRepositoryConnector
 
     }
 
+    static {
+        CONFIG_SKIP_CHECKSUMS = System.getenv().containsKey( CONFIG_PROP_SKIP_CHECKSUMS )
+            ? ( null == System.getenv().get( CONFIG_PROP_SKIP_CHECKSUMS )
+                ? true : Boolean.valueOf( System.getenv().get( CONFIG_PROP_SKIP_CHECKSUMS ) ) )
+            : ( System.getProperties().containsKey( CONFIG_PROP_SKIP_CHECKSUMS )
+                ? ( null == System.getProperties().get( CONFIG_PROP_SKIP_CHECKSUMS )
+                    ? Boolean.TRUE
+                        : Boolean.valueOf( System.getProperties().getProperty( CONFIG_PROP_SKIP_CHECKSUMS ) ) )
+                : false );
+    }
 }
