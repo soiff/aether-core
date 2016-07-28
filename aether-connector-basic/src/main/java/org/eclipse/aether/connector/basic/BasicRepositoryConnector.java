@@ -451,7 +451,7 @@ final class BasicRepositoryConnector
                     transporter.get( task );
 
                     if ( CONFIG_SKIP_CHECKSUMS )
-                        continue;
+                        break;
 
                     try
                     {
