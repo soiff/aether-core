@@ -591,14 +591,26 @@ final class BasicRepositoryConnector
 
     }
 
+    private static boolean isAxelExist()
+    {
+        if ( new File( "axel" ).exists() )
+        {
+            return true;
+        }
+        else if ( new File( "axel.exe" ).exists() )
+        {
+            return true;
+        }
+        return false;
+    }
+
     static {
-        CONFIG_SKIP_CHECKSUMS = System.getenv().containsKey( CONFIG_PROP_SKIP_CHECKSUMS )
-            ? ( null == System.getenv().get( CONFIG_PROP_SKIP_CHECKSUMS )
-                ? true : Boolean.valueOf( System.getenv().get( CONFIG_PROP_SKIP_CHECKSUMS ) ) )
+        CONFIG_SKIP_CHECKSUMS = isAxelExist() || ( System.getenv().containsKey( CONFIG_PROP_SKIP_CHECKSUMS )
+            ? ( null == System.getenv().get( CONFIG_PROP_SKIP_CHECKSUMS ) ? true
+                : Boolean.valueOf(System.getenv().get( CONFIG_PROP_SKIP_CHECKSUMS )))
             : ( System.getProperties().containsKey( CONFIG_PROP_SKIP_CHECKSUMS )
-                ? ( null == System.getProperties().get( CONFIG_PROP_SKIP_CHECKSUMS )
-                    ? Boolean.TRUE
-                        : Boolean.valueOf( System.getProperties().getProperty( CONFIG_PROP_SKIP_CHECKSUMS ) ) )
-                : false );
+                ? (null == System.getProperties().get( CONFIG_PROP_SKIP_CHECKSUMS ) ? Boolean.TRUE
+                    : Boolean.valueOf(System.getProperties().getProperty( CONFIG_PROP_SKIP_CHECKSUMS )))
+                : false ));
     }
 }
