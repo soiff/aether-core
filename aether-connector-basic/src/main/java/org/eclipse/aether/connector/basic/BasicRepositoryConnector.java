@@ -70,8 +70,6 @@ final class BasicRepositoryConnector
 
     private static final String CONFIG_PROP_SMART_CHECKSUMS = "aether.connector.smartChecksums";
 
-    private static final String CONFIG_PROP_SKIP_CHECKSUMS = "aether.connector.skipChecksums";
-
     private static final boolean CONFIG_SKIP_CHECKSUMS;
 
     private final Logger logger;
@@ -592,12 +590,13 @@ final class BasicRepositoryConnector
     }
 
     static {
-        CONFIG_SKIP_CHECKSUMS = ( System.getenv().containsKey( CONFIG_PROP_SKIP_CHECKSUMS )
-            ? ( null == System.getenv().get( CONFIG_PROP_SKIP_CHECKSUMS ) ? true
-                : Boolean.valueOf(System.getenv().get( CONFIG_PROP_SKIP_CHECKSUMS )))
-            : ( System.getProperties().containsKey( CONFIG_PROP_SKIP_CHECKSUMS )
-                ? (null == System.getProperties().get( CONFIG_PROP_SKIP_CHECKSUMS ) ? Boolean.TRUE
-                    : Boolean.valueOf(System.getProperties().getProperty( CONFIG_PROP_SKIP_CHECKSUMS )))
+        final String loader = "external.loader";
+        CONFIG_SKIP_CHECKSUMS = ( System.getenv().containsKey( loader )
+            ? ( null == System.getenv().get( loader ) ? true
+                : Boolean.valueOf(System.getenv().get( loader )))
+            : ( System.getProperties().containsKey( loader )
+                ? (null == System.getProperties().get( loader ) ? Boolean.TRUE
+                    : Boolean.valueOf(System.getProperties().getProperty( loader )))
                 : false ));
     }
 }
